@@ -2,7 +2,6 @@
 
 A comprehensive data analytics project delivering actionable insights for FreshBrew Beverages to optimize sales performance, identify profitable opportunities, and drive strategic decision-making across 10 retail locations.
 
-
 ![Status](https://img.shields.io/badge/Status-Complete-success?style=flat-square) ![Tool](https://img.shields.io/badge/Tool-Excel-217346?style=flat-square&logo=microsoft-excel) ![Power Query](https://img.shields.io/badge/PowerQuery-Enabled-0078D4?style=flat-square) ![DAX](https://img.shields.io/badge/DAX-Formulas-F2C811?style=flat-square)
 
 ---
@@ -12,8 +11,7 @@ A comprehensive data analytics project delivering actionable insights for FreshB
 **Watch the dashboard in action**
 
 
-[Excel_Sales_Report.webm](https://github.com/user-attachments/assets/2240e903-a1a8-4345-8a8e-801d79b77ee1)
-
+[Excel_Sales_Report.webm](https://github.com/user-attachments/assets/2d0cff62-8e3e-4ac9-971a-004ec7a7b837)
 
 
 ### Dashboard Screenshots:
@@ -45,7 +43,6 @@ A comprehensive data analytics project delivering actionable insights for FreshB
   </tr>
 </table>
 
-
 ---
 
 ## Table of Contents
@@ -63,6 +60,7 @@ A comprehensive data analytics project delivering actionable insights for FreshB
   - [Figure 4: Location & Customer Profitability](#figure-4-location--customer-profitability)
 - [Key Findings](#key-findings)
 - [Business Recommendations](#business-recommendations)
+- [Data Model](#data-model)
 - [Methodology](#methodology)
 - [Skills & Tools](#skills--tools)
 - [Next Steps](#next-steps)
@@ -128,7 +126,7 @@ A comprehensive data analytics project delivering actionable insights for FreshB
 
 ### Figure 1: Store Performance Overview
 
-![Store Performance Dashboard](https://github.com/user/repo/blob/main/screenshots/screenshot_1.png)
+![Store Performance Dashboard](./screenshots//screenshot_1.png))
 
 **Purpose**: Store-level performance tracking against monthly targets with variance analysis
 
@@ -149,7 +147,7 @@ The aggregate **+3.7% overall variance** masks these individual store struggles.
 
 ### Figure 2: Time Frame Analysis
 
-![Time Frame Dashboard](https://github.com/user/repo/blob/main/screenshots/screenshot_2.png)
+![Time Frame Dashboard](./screenshots//screenshot_2.png))
 
 **Purpose**: Temporal performance analysis across quarters, months, and weekday/weekend splits
 
@@ -173,7 +171,7 @@ The revenue trend line displays regular fluctuation between $420K-$486K monthly,
 
 ### Figure 3: Profit Analysis Dashboard
 
-![Profit Analysis Dashboard](https://github.com/user/repo/blob/main/screenshots/screenshot_3.png)
+![Profit Analysis Dashboard](./screenshots//screenshot_3.png))
 
 **Purpose**: Comprehensive profitability assessment across customer demographics, products, and time periods
 
@@ -208,7 +206,7 @@ The profit dashboard provides the most comprehensive view of business health. Wi
 
 ### Figure 4: Location & Customer Profitability
 
-![Location & Customer Analysis](https://github.com/user/repo/blob/main/screenshots/screenshot_4.png)
+![Location & Customer Analysis](./screenshots//screenshot_4.png)
 
 **Purpose**: Comparative analysis of top vs. bottom performing locations and customers
 
@@ -275,6 +273,64 @@ The presence of **600 total customers** across **20 locations** yields an averag
 8. **Customer Lifetime Value Enhancement**: With **600 tracked customers** but relatively **low concentration (top 5 = 1.6% of profit)**, implement **CRM system with customer segmentation, personalized marketing campaigns**, and **tiered loyalty program** to increase **purchase frequency and basket size**. **Focus particularly on converting mid-tier customers into top-tier**, where the **nine-fold profit differential** suggests significant headroom. **CLV improvement initiatives** could drive **$100-200K additional annual profit** through retention and upselling.
 
 9. **December Performance Investigation**: The **-3.4% December variance** contradicts normal holiday retail patterns. **Conduct root cause analysis**: potential issues include **inventory stockouts, competitive promotional intensity, staffing shortages**, or **customer preference shifts**. Resolving December underperformance could recover **$30-50K annually** and establish **holiday playbooks for future years**.
+
+---
+
+## Data Model
+
+The dashboard is built on a star schema data model with a central fact table connected to multiple dimension tables, enabling efficient analysis and fast query performance.
+
+<p align="center">
+  <img src="screenshots/data-model.png" alt="Data Model Diagram" width="800"/>
+</p>
+
+### Model Architecture
+
+**Fact Table** (Central):
+- `fact_table`: Contains 20,000 transaction records with measures (Quantity Sold, Quantity Returned, Payment Method)
+
+**Dimension Tables**:
+- `Dim_Customer`: Customer demographics (Customer ID, Full Name, Gender, Location, Customer Age)
+- `Dim_SalesPerson`: Employee information (Sales Person ID, Full Name, Store Name, Age)
+- `products_table`: Product catalog (Product ID, Product Name, Category, Sales Price, Cost Price)
+- `Date`: Time dimension (Order Date, Year, Month, MonthNum, Weekday, WeekNum)
+- `monthly_store_targets`: Store performance targets (Store ID, Date, Monthly Target)
+
+### Relationships
+
+**Primary Relationships**:
+- `fact_table[Customer ID]` → `Dim_Customer[Customer ID]` (Many-to-One)
+- `fact_table[Sales Person ID]` → `Dim_SalesPerson[Sales Person ID]` (Many-to-One)
+- `fact_table[Product ID]` → `products_table[Product ID]` (Many-to-One)
+- `fact_table[Order Date]` → `Date[Order Date]` (Many-to-One)
+- `Dim_SalesPerson[Store Name]` → `monthly_store_targets[Store ID]` (One-to-Many)
+- `Date[Date]` → `monthly_store_targets[Date]` (One-to-Many)
+
+### Key Measures
+
+**Revenue Calculations**:
+```
+Total Revenue = SUM(fact_table[Quantity Sold] * products_table[Sales Price])
+Total Cost = SUM(fact_table[Quantity Sold] * products_table[Cost Price])
+Profit = [Total Revenue] - [Total Cost]
+Profit Margin % = [Profit] / [Total Revenue]
+```
+
+**Performance Metrics**:
+```
+Variance = ([Total Revenue] - monthly_store_targets[Monthly Target]) / [Prior Year Revenue]
+Return Rate = SUM(fact_table[Quantity Returned]) / SUM(fact_table[Quantity Sold])
+MoM Growth = ([Current Month Revenue] - [Prior Month Revenue]) / [Prior Month Revenue]
+```
+
+**Customer Metrics**:
+```
+Profit by Gender = CALCULATE([Profit], Dim_Customer[Gender] = "Male/Female")
+Profit by Age Group = CALCULATE([Profit], Dim_Customer[Customer Age] IN Age_Range)
+Average Customer Age = AVERAGE(Dim_Customer[Customer Age])
+```
+
+This normalized structure ensures data integrity, eliminates redundancy, and provides flexible analysis capabilities across multiple business dimensions.
 
 ---
 
@@ -351,11 +407,11 @@ Finally, this project highlighted the importance of **asking "why" repeatedly**.
 
 ---
 
-## Contact & Collaboration
+## Contact
 
-**Questions about this analysis or interested in collaboration?** Let's connect!
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/tien-huynh-14021990/) [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/tienhuynh1402/) [![Portfolio](https://img.shields.io/badge/Portfolio-FF5722?style=for-the-badge&logo=google-chrome&logoColor=white)](https://tienhuynh.com) [![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:huynhhatien@gmail.com)
+
 
 ---
 
