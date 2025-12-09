@@ -126,7 +126,7 @@ A comprehensive data analytics project delivering actionable insights for FreshB
 
 ### Figure 1: Store Performance Overview
 
-![Store Performance Dashboard](./screenshots//screenshot_1.png))
+![Store Performance Dashboard](./screenshots//screenshot_1.png)
 
 **Purpose**: Store-level performance tracking against monthly targets with variance analysis
 
@@ -147,7 +147,7 @@ The aggregate **+3.7% overall variance** masks these individual store struggles.
 
 ### Figure 2: Time Frame Analysis
 
-![Time Frame Dashboard](./screenshots//screenshot_2.png))
+![Time Frame Dashboard](./screenshots//screenshot_2.png)
 
 **Purpose**: Temporal performance analysis across quarters, months, and weekday/weekend splits
 
@@ -171,7 +171,7 @@ The revenue trend line displays regular fluctuation between $420K-$486K monthly,
 
 ### Figure 3: Profit Analysis Dashboard
 
-![Profit Analysis Dashboard](./screenshots//screenshot_3.png))
+![Profit Analysis Dashboard](./screenshots//screenshot_3.png)
 
 **Purpose**: Comprehensive profitability assessment across customer demographics, products, and time periods
 
